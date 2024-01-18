@@ -209,7 +209,7 @@ func (e ExerciseConfig) CreateContainerOpts() []ContainerOptions {
 			value := flag.StaticFlag
 
 			// static flag format in exercises file
-			//  should obey flag format HKN{*********}
+			//  should obey flag format FIRE{*********}
 			if value == "" {
 				// flag is not static
 				value = NewFlag().String()
