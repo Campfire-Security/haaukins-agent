@@ -274,9 +274,10 @@ func (c *Container) getCreateConfig() (*docker.CreateContainerOptions, error) {
 		}
 
 		hostConf.Mounts = append(hostConf.Mounts, docker.HostMount{
-			Target: "/etc/resolv.conf",
-			Source: resolvPath,
-			Type:   "bind",
+			Target:   "/etc/resolv.conf",
+			Source:   resolvPath,
+			Type:     "bind",
+			ReadOnly: true,
 		})
 	}
 
@@ -1009,20 +1010,8 @@ func verifyLocalImageVersion(img Image) error {
 		return NoLocalDigestErr{img}
 	}
 
-	localDigest := localImg.RepoDigests[0]
-	if strings.Contains(localDigest, "@") {
-		localDigest = strings.Split(localDigest, "@")[1]
-	}
-
-	remoteDigest, err := getRemoteDigestForImage(creds, img)
-	if err != nil {
+	if err := retrieveImage(creds, img); err != nil {
 		return err
-	}
-
-	if remoteDigest != localDigest {
-		if err := retrieveImage(creds, img); err != nil {
-			return err
-		}
 	}
 
 	return nil

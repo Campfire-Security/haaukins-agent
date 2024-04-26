@@ -23,7 +23,7 @@ const (
 	letterIdxMask      = 1<<letterIdxBits - 1 // All 1-bits, as many as letterIdxBits
 	letterIdxMax       = 63 / letterIdxBits   // # of letter indices fitting in 63 bits
 	flagUniqueChars    = 10
-	flagNumCharsFormat = 15
+	flagNumCharsFormat = 16
 )
 
 var (
@@ -104,15 +104,15 @@ func NewFlag() Flag {
 func (f Flag) String() string {
 	// Used only in dynamic flags
 	var str string
-	str = string(f[4 : flagNumCharsFormat-1])
+	str = string(f[5 : flagNumCharsFormat-1])
 	i := (2 + rand.Intn(2))
 	j := (i + 2 + rand.Intn(2))
 
-	return fmt.Sprintf("HKN{%s}", str[:i]+"-"+str[i:j]+"-"+str[j:])
+	return fmt.Sprintf("FIRE{%s}", str[:i]+"-"+str[i:j]+"-"+str[j:])
 }
 
 func formatFlag(arr [flagUniqueChars]byte) [flagNumCharsFormat]byte {
-	flag := fmt.Sprintf("HKN{%s}", arr)
+	flag := fmt.Sprintf("FIRE{%s}", arr)
 	var formattedFlag [flagNumCharsFormat]byte
 	for k, v := range []byte(flag) {
 		formattedFlag[k] = byte(v)

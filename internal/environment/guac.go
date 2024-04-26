@@ -75,7 +75,7 @@ func (guac *Guacamole) create(ctx context.Context, eventTag string) error {
 	containers := map[string]*virtual.Container{}
 
 	containers["guacd"] = virtual.NewContainer(virtual.ContainerConfig{
-		Image:     "guacamole/guacd:1.2.0",
+		Image:     "guacamole/guacd:1.5.3",
 		UseBridge: true,
 		Labels: map[string]string{
 			"hkn": "guacamole_guacd",
@@ -89,7 +89,7 @@ func (guac *Guacamole) create(ctx context.Context, eventTag string) error {
 	mysqlPass := uuid.New().String()
 	log.Debug().Str("mysqlPass", mysqlPass).Msg("mysql pw for guac")
 	containers["db"] = virtual.NewContainer(virtual.ContainerConfig{
-		Image: "registry.gitlab.com/haaukins/core-utils/guacamole:mysql",
+		Image: "ghcr.io/campfire-security/guac-db:latest",
 		EnvVars: map[string]string{
 			"MYSQL_ROOT_PASSWORD": uuid.New().String(),
 			"MYSQL_DATABASE":      "guacamole_db",
@@ -105,7 +105,7 @@ func (guac *Guacamole) create(ctx context.Context, eventTag string) error {
 	guacdAlias := uuid.New().String()
 	dbAlias := uuid.New().String()
 	containers["web"] = virtual.NewContainer(virtual.ContainerConfig{
-		Image: "guacamole/guacamole:1.2.0",
+		Image: "guacamole/guacamole:1.5.3",
 		EnvVars: map[string]string{
 			"MYSQL_DATABASE": "guacamole_db?useSSL=false",
 			"MYSQL_USER":     "guacamole_user",
@@ -611,7 +611,6 @@ func (guac *Guacamole) authAction(action string, a func(string) (*http.Response,
 		return err
 	}
 
-	log.Debug().Msgf("i in action: %v", i)
 	if i != nil {
 		if err := json.Unmarshal(content, i); err != nil {
 			return err

@@ -9,3 +9,6 @@ casbin.md
 data
 vms
 .VSCodeCounter
+log.log
+pid
+release

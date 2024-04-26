@@ -15,11 +15,8 @@ type Config struct {
 	FileTransferRoot   string                           `yaml:"file-transfer-root"`
 	OvaDir             string                           `yaml:"ova-dir"`
 	StatePath          string                           `yaml:"state-path"`
-	ExerciseService    ServiceConfig                    `yaml:"exercise-service"`
 	VPNService         VPNconf                          `yaml:"vpn-service"`
 	DockerRepositories []dockerclient.AuthConfiguration `yaml:"docker-repositories"`
-	GuacSSL            bool                             `yaml:"guac-ssl"`
-	JwtSecret          string                           `yaml:"jwtSecret"`
 }
 
 type VPNconf struct {

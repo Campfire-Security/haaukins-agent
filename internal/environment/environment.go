@@ -2,6 +2,7 @@ package environment
 
 import (
 	"context"
+	"errors"
 	"fmt"
 	"io"
 	"math/rand"
@@ -36,6 +37,7 @@ func (ec *EnvConfig) NewEnv(ctx context.Context) (*Environment, error) {
 	wgClient, err := wg.NewGRPCVPNClient(ec.VpnConfig)
 	if err != nil {
 		log.Error().Err(err).Msg("error connecting to wg server")
+		guac.Close()
 		return nil, err
 	}
 
@@ -103,7 +105,8 @@ func (env *Environment) Start(ctx context.Context) error {
 	if err != nil {
 		// Continue without vpn if err is present
 		// TODO If vpn is for some reason not initialized, it should be possible to try to reininialize for this specific agent and environment
-		log.Error().Err(err).Msg("error initializing vpn endpoint... \n continueing wihout, reininialize from admin webclient")
+		log.Error().Err(err).Msg("error initializing vpn endpoint")
+		return errors.New("error initializing vpn endpoint")
 	}
 
 	env.EnvConfig.Status = StatusRunning
